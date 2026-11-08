@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEXVOR - Ficha del Cliente</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 1px solid #2a2a2a;
+        }
+        .header { text-align: center; margin-bottom: 40px; padding-bottom: 30px; border-bottom: 2px solid #d4af37; }
+        .logo-container { margin-bottom: 20px; }
+        .logo-img { width: 200px; height: auto; margin: 0 auto; display: block; }
+        .slogan { color: #888; font-style: italic; font-size: 1.1em; letter-spacing: 2px; }
+        .section { margin-bottom: 35px; padding: 25px; background: #222; border-radius: 10px; border-left: 4px solid #d4af37; }
+        .section-title { 
+            font-size: 1.3em; 
+            color: #d4af37; 
+            margin-bottom: 20px; 
+            padding-bottom: 10px; 
+            border-bottom: 1px solid #333; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            word-wrap: break-word; 
+            overflow-wrap: break-word; 
+        }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #c0c0c0; font-weight: 500; }
+        input[type="text"], input[type="number"], input[type="tel"], input[type="email"], input[type="date"], input[type="time"], textarea, select {
+            width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #444; border-radius: 5px; color: #e0e0e0; font-size: 1em; transition: all 0.3s;
+        }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+        textarea { resize: vertical; min-height: 80px; }
+        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin-top: 10px; }
+        .checkbox-item { display: flex; align-items: center; padding: 10px; background: #1a1a1a; border-radius: 5px; cursor: pointer; transition: all 0.3s; }
+        .checkbox-item:hover { background: #2a2a2a; }
+        .checkbox-item input[type="checkbox"] { margin-right: 10px; width: 18px; height: 18px; cursor: pointer; }
+        .radio-group { display: flex; gap: 20px; margin-top: 10px; flex-wrap: wrap; }
+        .radio-item { display: flex; align-items: center; cursor: pointer; }
+        .radio-item input[type="radio"] { margin-right: 8px; width: 18px; height: 18px; cursor: pointer; }
+        .conditional-field { display: none; margin-top: 15px; padding: 15px; background: #1a1a1a; border-radius: 5px; border-left: 3px solid #c0c0c0; }
+        .conditional-field.active { display: block; }
+        .consent-text { background: #1a1a1a; padding: 20px; border-radius: 5px; border: 1px solid #444; margin-bottom: 20px; max-height: 300px; overflow-y: auto; font-size: 0.95em; line-height: 1.8; }
+        .consent-text h3 { color: #d4af37; margin-bottom: 15px; }
+        .consent-text p { margin-bottom: 15px; }
+        .consent-text ul { margin-left: 20px; margin-bottom: 15px; }
+        .consent-text li { margin-bottom: 8px; }
+        .privacy-text { background: #1a1a1a; padding: 20px; border-radius: 5px; border: 1px solid #444; margin-bottom: 20px; max-height: 300px; overflow-y: auto; font-size: 0.9em; line-height: 1.8; color: #c0c0c0; }
+        .privacy-text h3 { color: #d4af37; margin-bottom: 15px; }
+        .privacy-text p { margin-bottom: 10px; }
+        .privacy-text strong { color: #e0e0e0; }
+        .signature-field { margin-top: 20px; }
+        .buttons { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+        .btn { flex: 1; min-width: 200px; padding: 15px 30px; border: none; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-whatsapp { background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); color: white; }
+        .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); }
+        .btn-signature { background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%); color: white; }
+        .btn-signature:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4); }
+        .required { color: #d4af37; }
+        .warning-message { background: #3d2817; border: 1px solid #d4af37; border-radius: 8px; padding: 15px; margin-top: 15px; color: #d4af37; font-size: 0.95em; display: none; }
+        .warning-message.active { display: block; }
+
+        input[type="time"], input[type="date"] {
+            cursor: pointer;
+            text-align: center;
+            font-size: 1.1em;
+            padding: 15px 12px;
+        }
+        input[type="time"]::-webkit-calendar-picker-indicator,
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            .section-title { font-size: 1.1em; letter-spacing: 1px; }
+            input[type="time"], input[type="date"] { font-size: 1em; padding: 12px 8px; }
+        }
+
+        @media print {
+            body { background: white !important; color: black !important; padding: 0 !important; }
+            .container { box-shadow: none !important; border: none !important; background: white !important; max-width: 100% !important; padding: 20px !important; }
+            .buttons { display: none !important; }
+            .section { background: white !important; border: 1px solid #ddd !important; border-left: 4px solid #d4af37 !important; page-break-inside: avoid; }
+            .section-title { color: #000 !important; }
+            input, textarea, select { background: white !important; color: black !important; border: 1px solid #ccc !important; }
+            .consent-text, .privacy-text { background: white !important; color: black !important; border: 1px solid #ccc !important; max-height: none !important; overflow: visible !important; }
+            .consent-text h3, .privacy-text h3 { color: #000 !important; }
+            .logo-img { filter: none !important; }
+            .slogan { color: #555 !important; }
+            .warning-message { background: #fff3cd !important; border-color: #ffc107 !important; color: #856404 !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Modal de Agradecimiento -->
+        <div id="mensajeAgradecimiento" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; padding: 20px;">
+            <div style="background: #1a1a1a; border: 2px solid #d4af37; border-radius: 15px; padding: 40px; max-width: 500px; text-align: center; color: #e0e0e0;">
+                <div style="font-size: 4em; margin-bottom: 20px;">🎉</div>
+                <h2 style="color: #d4af37; margin-bottom: 20px; font-size: 1.8em;">¡Gracias <span id="nombreAgradecimiento"></span>!</h2>
+                <p style="font-size: 1.1em; margin-bottom: 15px; line-height: 1.6;">Recibimos tu ficha correctamente.</p>
+                <p style="font-size: 1em; margin-bottom: 25px; color: #888;">Te contactaremos en breve por WhatsApp para confirmar el horario de tu sesión.</p>
+                <div style="color: #d4af37; font-style: italic; margin-bottom: 30px;">¡Gracias por confiar en LEXVOR!</div>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <button onclick="cerrarMensajeAgradecimiento()" style="background: #2a2a2a; color: #d4af37; border: 1px solid #d4af37; padding: 12px 25px; border-radius: 8px; font-size: 0.95em; cursor: pointer;">Revisar mis datos</button>
+                    <button onclick="salirYLimpair()" style="background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 0.95em; font-weight: bold; cursor: pointer;">Salir y finalizar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="header">
+            <div class="logo-container">
+                <img src="logo-lexvor.png" alt="LEXVOR" class="logo-img">
+            </div>
+            <p class="slogan">Ingeniería de la recuperación</p>
+            <p style="color: #888; margin-top: 15px; font-size: 0.9em;">Ficha de Evaluación del Cliente</p>
+        </div>
+
+        <form id="clientForm">
+            <!-- SECCIÓN 1: DATOS PERSONALES -->
+            <div class="section">
+                <h2 class="section-title">1. Datos Personales</h2>
+                <div class="form-group">
+                    <label>Nombre completo <span class="required">*</span></label>
+                    <input type="text" id="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label>Edad <span class="required">*</span></label>
+                    <input type="number" id="edad" min="18" max="100" required>
+                </div>
+                <div class="form-group">
+                    <label>Teléfono de contacto (WhatsApp) <span class="required">*</span></label>
+                    <input type="tel" id="telefono" required>
+                </div>
+                <div class="form-group">
+                    <label>Correo electrónico (opcional)</label>
+                    <input type="email" id="email">
+                </div>
+                <div class="form-group" style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #333;">
+                    <label>¿Ya fuiste cliente de LEXVOR anteriormente? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="clienteRecurrente" value="No" checked onchange="toggleClienteRecurrente()">
+                            No, es mi primera vez
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="clienteRecurrente" value="Si" onchange="toggleClienteRecurrente()">
+                            Sí, ya fui cliente antes
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: LOGÍSTICA -->
+            <div class="section">
+                <h2 class="section-title">2. Datos del Servicio a Domicilio</h2>
+                <div class="form-group">
+                    <label>Dirección completa (Calle y número) <span class="required">*</span></label>
+                    <input type="text" id="direccion" required>
+                </div>
+                <div class="form-group">
+                    <label>Entre calles</label>
+                    <input type="text" id="entreCalles">
+                </div>
+                <div class="form-group">
+                    <label>Piso</label>
+                    <input type="text" id="piso">
+                </div>
+                <div class="form-group">
+                    <label>Departamento</label>
+                    <input type="text" id="departamento">
+                </div>
+                <div class="form-group">
+                    <label>Lugar de residencia <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="zona" value="CABA" onchange="toggleZona()"> CABA
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="zona" value="ZONA OESTE" onchange="toggleZona()"> ZONA OESTE
+                        </label>
+                    </div>
+                </div>
+                <div class="conditional-field" id="campoCABA">
+                    <label>Barrio <span class="required">*</span></label>
+                    <input type="text" id="barrio">
+                </div>
+                <div class="conditional-field" id="campoZonaOeste">
+                    <label>Localidad <span class="required">*</span></label>
+                    <input type="text" id="localidad">
+                </div>
+                <div class="form-group">
+                    <label>Fecha de la sesión <span class="required">*</span></label>
+                    <input type="date" id="fecha" required>
+                </div>
+                <div class="form-group">
+                    <label>Hora de la sesión <span class="required">*</span></label>
+                    <input type="time" id="hora" required>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3A: HISTORIAL DE SALUD (SOLO NUEVOS) -->
+            <div class="section" id="seccionSaludCompleta">
+                <h2 class="section-title">3. Historial de Salud y Contraindicaciones</h2>
+                
+                <div class="form-group">
+                    <label>¿Tiene actualmente alguna lesión, cirugía, fractura o condición física que deba tener en cuenta? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-item"><input type="radio" name="lesionReciente" value="Sí"> Sí</label>
+                        <label class="radio-item"><input type="radio" name="lesionReciente" value="No"> No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Si respondió SÍ, indique brevemente:</label>
+                    <textarea id="lesionDetalle" placeholder="Ej: Lesión de rodilla derecha, actualmente en recuperación con fisioterapia."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>¿Padece alguna de las siguientes condiciones? (Marque todas las que apliquen)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox" name="condiciones" value="Hipertensión/Problemas cardíacos"> Hipertensión / Problemas cardíacos</label>
+                        <label class="checkbox-item"><input type="checkbox" name="condiciones" value="Diabetes"> Diabetes</label>
+                        <label class="checkbox-item"><input type="checkbox" name="condiciones" value="Embarazo"> Embarazo</label>
+                        <label class="checkbox-item"><input type="checkbox" name="condiciones" value="Problemas de piel/heridas abiertas"> Problemas de piel o heridas abiertas</label>
+                        <label class="checkbox-item"><input type="checkbox" name="condiciones" value="Trombosis/Varices severas"> Trombosis o varices severas</label>
+                        <label class="checkbox-item"><input type="checkbox" name="condiciones" value="Problemas de coagulación"> Problemas de coagulación</label>
+                        <label class="checkbox-item"><input type="checkbox" name="condiciones" value="Ninguna"> Ninguna</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Si marcó Embarazo, ¿cuántas semanas?</label>
+                    <input type="text" id="embarazoSemanas">
+                </div>
+
+                <div class="form-group">
+                    <label>Problemas musculoesqueléticos (Marque todas las que apliquen)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox" name="musculoesqueletico" value="Problemas de columna"> Problemas de columna</label>
+                        <label class="checkbox-item"><input type="checkbox" name="musculoesqueletico" value="Problemas articulares"> Problemas articulares</label>
+                        <label class="checkbox-item"><input type="checkbox" name="musculoesqueletico" value="Hernias discales"> Hernias discales</label>
+                        <label class="checkbox-item"><input type="checkbox" name="musculoesqueletico" value="Escoliosis"> Escoliosis</label>
+                        <label class="checkbox-item"><input type="checkbox" name="musculoesqueletico" value="Artritis"> Artritis</label>
+                        <label class="checkbox-item"><input type="checkbox" name="musculoesqueletico" value="Osteoporosis"> Osteoporosis</label>
+                        <label class="checkbox-item"><input type="checkbox" name="musculoesqueletico" value="Ninguno"> Ninguno</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>¿Utiliza alguno de estos medicamentos? (Marque todas las que apliquen) <span class="required">*</span></label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox" name="tipoMedicamentos" value="Anticoagulantes"> Anticoagulantes</label>
+                        <label class="checkbox-item"><input type="checkbox" name="tipoMedicamentos" value="Antihipertensivos"> Antihipertensivos</label>
+                        <label class="checkbox-item"><input type="checkbox" name="tipoMedicamentos" value="Antiinflamatorios"> Antiinflamatorios</label>
+                        <label class="checkbox-item"><input type="checkbox" name="tipoMedicamentos" value="Otros"> Otros</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Si marcó "Otros", indique cuáles:</label>
+                    <textarea id="tipoMedicamentosDetalle" placeholder="Ej: Warfarina 5mg, Losartán 50mg, Ibuprofeno 400mg."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>¿Tiene alguna alergia (incluyendo a aceites esenciales)? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-item"><input type="radio" name="alergias" value="Sí"> Sí</label>
+                        <label class="radio-item"><input type="radio" name="alergias" value="No"> No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Si respondió SÍ, especifique:</label>
+                    <textarea id="alergiasDetalle"></textarea>
+                </div>
+
+                <div class="form-group" style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #333;">
+                    <label><strong>¿Presenta actualmente alguno de estos síntomas?</strong> <span class="required">*</span></label>
+                    <p style="color: #888; font-size: 0.85em; margin-bottom: 15px;">Esta información es fundamental para su seguridad. Si presenta alguno de estos síntomas, el terapeuta evaluará si es seguro proceder con la sesión.</p>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox" name="sintomas" value="Fiebre o malestar general"> Fiebre o malestar general</label>
+                        <label class="checkbox-item"><input type="checkbox" name="sintomas" value="Inflamación o hinchazón inexplicable"> Inflamación o hinchazón inexplicable</label>
+                        <label class="checkbox-item"><input type="checkbox" name="sintomas" value="Dolor intenso de aparición reciente"> Dolor intenso de aparición reciente</label>
+                        <label class="checkbox-item"><input type="checkbox" name="sintomas" value="Enrojecimiento o infección en la zona"> Enrojecimiento o infección en la zona</label>
+                        <label class="checkbox-item"><input type="checkbox" name="sintomas" value="Ninguno de los anteriores"> Ninguno de los anteriores</label>
+                    </div>
+                    <div class="warning-message" id="warningSintomas">
+                        ⚠️ <strong>Importante:</strong> Según los síntomas indicados, recomendamos consultar con su médico antes de realizar la sesión. El terapeuta evaluará si es seguro proceder.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3B: ACTUALIZACIÓN (SOLO RECURRENTES) -->
+            <div class="section" id="seccionSaludRecurrente" style="display: none;">
+                <h2 class="section-title">3. Actualización de Salud (Cliente Recurrente)</h2>
+                <div class="form-group">
+                    <label>¿Cambió algo en tu estado de salud, medicación, lesiones o molestias desde tu última sesión? <span class="required">*</span></label>
+                    <textarea id="cambiosSaludRecurrente" placeholder="Ej: No, todo sigue igual. / Sí, ahora tengo una leve molestia en la rodilla derecha."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>¿Comenzó a tomar algún medicamento nuevo? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-item"><input type="radio" name="nuevosMedicamentos" value="Sí"> Sí</label>
+                        <label class="radio-item"><input type="radio" name="nuevosMedicamentos" value="No"> No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Si respondió SÍ, especifique:</label>
+                    <textarea id="nuevosMedicamentosDetalle" placeholder="Ej: Empecé a tomar warfarina por indicación médica."></textarea>
+                </div>
+
+                <div class="form-group" style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #333;">
+                    <label><strong>¿Presenta actualmente alguno de estos síntomas?</strong> <span class="required">*</span></label>
+                    <p style="color: #888; font-size: 0.85em; margin-bottom: 15px;">Esta información es fundamental para su seguridad.</p>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox" name="sintomasRecurrente" value="Fiebre o malestar general"> Fiebre o malestar general</label>
+                        <label class="checkbox-item"><input type="checkbox" name="sintomasRecurrente" value="Inflamación o hinchazón inexplicable"> Inflamación o hinchazón inexplicable</label>
+                        <label class="checkbox-item"><input type="checkbox" name="sintomasRecurrente" value="Dolor intenso de aparición reciente"> Dolor intenso de aparición reciente</label>
+                        <label class="checkbox-item"><input type="checkbox" name="sintomasRecurrente" value="Enrojecimiento o infección en la zona"> Enrojecimiento o infección en la zona</label>
+                        <label class="checkbox-item"><input type="checkbox" name="sintomasRecurrente" value="Ninguno de los anteriores"> Ninguno de los anteriores</label>
+                    </div>
+                    <div class="warning-message" id="warningSintomasRecurrente">
+                        ⚠️ <strong>Importante:</strong> Según los síntomas indicados, recomendamos consultar con su médico antes de realizar la sesión. El terapeuta evaluará si es seguro proceder.
+                    </div>
+                </div>
+
+                <p style="color: #888; font-size: 0.9em; margin-top: 10px;">
+                    💡 <em>Al ser cliente recurrente, ya tenemos tu historial completo en nuestros archivos. Solo necesitamos saber si hubo algún cambio para adaptar tu sesión de hoy de la mejor manera.</em>
+                </p>
+            </div>
+
+            <!-- SECCIÓN 4: MOTIVO DE LA CONSULTA -->
+            <div class="section">
+                <h2 class="section-title">4. Motivo de la Consulta y Estilo de Vida</h2>
+                
+                <div class="form-group" id="grupoActividadFisica">
+                    <label>¿Realiza actividad física o práctica algún deporte? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-item"><input type="radio" name="actividadFisica" value="Sí"> Sí</label>
+                        <label class="radio-item"><input type="radio" name="actividadFisica" value="No"> No</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Si respondió SÍ, especifique cuál y con qué frecuencia:</label>
+                        <textarea id="actividadDetalle"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Motivo principal de la sesión <span class="required">*</span></label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox" name="motivo" value="Tensión muscular"> Tensión muscular</label>
+                        <label class="checkbox-item"><input type="checkbox" name="motivo" value="Relajación"> Relajación</label>
+                        <label class="checkbox-item"><input type="checkbox" name="motivo" value="Bienestar general"> Bienestar general</label>
+                        <label class="checkbox-item"><input type="checkbox" name="motivo" value="Dolor específico"> Dolor específico</label>
+                        <label class="checkbox-item"><input type="checkbox" name="motivo" value="Recuperación deportiva"> Recuperación deportiva</label>
+                    </div>
+                    <label style="margin-top: 15px;">Otro motivo (especifique):</label>
+                    <textarea id="motivoOtro" placeholder="Si su motivo no está en la lista, descríbalo aquí."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Zona/s de molestia (puede marcar varias)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item"><input type="checkbox" name="zonaMolestia" value="Cuello"> Cuello</label>
+                        <label class="checkbox-item"><input type="checkbox" name="zonaMolestia" value="Hombros"> Hombros</label>
+                        <label class="checkbox-item"><input type="checkbox" name="zonaMolestia" value="Espalda alta"> Espalda alta</label>
+                        <label class="checkbox-item"><input type="checkbox" name="zonaMolestia" value="Espalda baja"> Espalda baja</label>
+                        <label class="checkbox-item"><input type="checkbox" name="zonaMolestia" value="Lumbar"> Lumbar</label>
+                        <label class="checkbox-item"><input type="checkbox" name="zonaMolestia" value="Glúteos"> Glúteos</label>
+                        <label class="checkbox-item"><input type="checkbox" name="zonaMolestia" value="Piernas"> Piernas</label>
+                        <label class="checkbox-item"><input type="checkbox" name="zonaMolestia" value="Rodillas"> Rodillas</label>
+                        <label class="checkbox-item"><input type="checkbox" name="zonaMolestia" value="Pies"> Pies</label>
+                        <label class="checkbox-item"><input type="checkbox" name="zonaMolestia" value="Brazos"> Brazos</label>
+                        <label class="checkbox-item"><input type="checkbox" name="zonaMolestia" value="Manos"> Manos</label>
+                        <label class="checkbox-item"><input type="checkbox" name="zonaMolestia" value="Abdomen"> Abdomen</label>
+                    </div>
+                    <label style="margin-top: 15px;">Otra zona (especifique):</label>
+                    <input type="text" id="zonaMolestiaOtra" placeholder="Si su zona no está en la lista, especifíquela aquí.">
+                </div>
+
+                <div class="form-group">
+                    <label>Escala de dolor (1 = molestia mínima, 10 = dolor máximo insoportable) <span class="required">*</span></label>
+                    <input type="number" id="escalaDolor" min="1" max="10" required>
+                </div>
+
+                <div class="form-group">
+                    <label>¿Hay alguna zona de su cuerpo que deba evitar o tratar con extrema suavidad?</label>
+                    <div class="radio-group">
+                        <label class="radio-item"><input type="radio" name="zonaEvitar" value="Sí"> Sí</label>
+                        <label class="radio-item"><input type="radio" name="zonaEvitar" value="No"> No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Si respondió SÍ, especifique cuáles:</label>
+                    <textarea id="zonaEvitarDetalle" placeholder="Ej: Zona lumbar baja, hombro derecho por lesión previa."></textarea>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 5: EXPERIENCIA PREVIA -->
+            <div class="section" id="seccionExperiencia">
+                <h2 class="section-title">5. Experiencia Previa</h2>
+                <div class="form-group">
+                    <label>¿Es su primera sesión de masaje? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-item"><input type="radio" name="primeraSesion" value="Sí"> Sí</label>
+                        <label class="radio-item"><input type="radio" name="primeraSesion" value="No"> No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>¿Hay algo más que el terapeuta deba saber para brindarle un servicio seguro y efectivo?</label>
+                    <textarea id="observaciones"></textarea>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 6: AVISO DE PRIVACIDAD -->
+            <div class="section">
+                <h2 class="section-title">6. Aviso de Privacidad</h2>
+                <div class="privacy-text">
+                    <h3>PROTECCIÓN DE DATOS PERSONALES</h3>
+                    <p>La información proporcionada en esta ficha será utilizada exclusivamente para conocer los antecedentes, necesidades y preferencias del cliente, preparar la sesión y realizar el seguimiento del servicio.</p>
+                    <p>Los datos personales y de salud serán tratados de manera confidencial y no serán compartidos con terceros, salvo obligación legal o autorización correspondiente.</p>
+                    <p>El cliente podrá solicitar el acceso, actualización o supresión de sus datos mediante comunicación directa.</p>
+                    <p>La información será conservada durante el tiempo necesario para cumplir con las finalidades indicadas y posteriormente será eliminada de forma segura cuando corresponda.</p>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 7: CONSENTIMIENTO INFORMADO -->
+            <div class="section">
+                <h2 class="section-title">7. Consentimiento Informado</h2>
+                <div class="consent-text">
+                    <h3>CONSENTIMIENTO INFORMADO - LEXVOR</h3>
+                    <p><strong>1. NATURALEZA DEL SERVICIO</strong></p>
+                    <p>Los servicios de masaje ofrecidos por LEXVOR son de carácter terapéutico y de bienestar. Estos servicios no reemplazan el diagnóstico, tratamiento o atención médica profesional.</p>
+                    <p><strong>2. CONTRAINDICACIONES</strong></p>
+                    <p>El cliente declara haber informado verazmente sobre su estado de salud. El terapeuta se reserva el derecho de suspender o modificar la sesión si detecta condiciones de riesgo.</p>
+                    <p><strong>3. RESPONSABILIDAD DEL CLIENTE</strong></p>
+                    <ul>
+                        <li>Proporcionar información veraz y completa sobre su estado de salud.</li>
+                        <li>Comunicar cualquier molestia o incomodidad durante la sesión.</li>
+                        <li>Proporcionar un espacio adecuado y seguro para la realización del servicio.</li>
+                    </ul>
+                    <p><strong>4. CONFIDENCIALIDAD</strong></p>
+                    <p>Toda la información personal y de salud proporcionada será tratada con estricta confidencialidad, conforme al Aviso de Privacidad detallado en la sección anterior.</p>
+                    <p><strong>5. ACEPTACIÓN</strong></p>
+                    <p>Al marcar la casilla abajo, el cliente declara haber leído, comprendido y aceptado toda la información aquí contenida, incluyendo el Aviso de Privacidad, y autoriza la realización del servicio de masaje.</p>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-item" style="background: #2a2a2a; padding: 15px;">
+                        <input type="checkbox" id="aceptaConsentimiento" required>
+                        <span>He leído, comprendo y acepto el consentimiento informado y el aviso de privacidad del servicio. <span class="required">*</span></span>
+                    </label>
+                </div>
+                <div class="signature-field">
+                    <div class="form-group">
+                        <label>Nombre completo (a modo de firma digital) <span class="required">*</span></label>
+                        <input type="text" id="firmaNombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de aceptación</label>
+                        <input type="text" id="fechaAceptacion" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="buttons">
+                <button type="button" class="btn btn-whatsapp" onclick="enviarWhatsApp()">📱 Enviar por WhatsApp</button>
+                <button type="button" class="btn btn-signature" onclick="generarVersionFirma()">🖨️ Imprimir</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Función para mostrar/ocultar campos de zona
+        function toggleZona() {
+            const zona = document.querySelector('input[name="zona"]:checked');
+            document.getElementById('campoCABA').classList.remove('active');
+            document.getElementById('campoZonaOeste').classList.remove('active');
+            if (zona) {
+                if (zona.value === 'CABA') document.getElementById('campoCABA').classList.add('active');
+                else if (zona.value === 'ZONA OESTE') document.getElementById('campoZonaOeste').classList.add('active');
+            }
+        }
+
+        // Función para cliente recurrente
+        function toggleClienteRecurrente() {
+            const esRecurrente = document.querySelector('input[name="clienteRecurrente"]:checked').value === 'Si';
+            const seccionCompleta = document.getElementById('seccionSaludCompleta');
+            const seccionRecurrente = document.getElementById('seccionSaludRecurrente');
+            const seccionExperiencia = document.getElementById('seccionExperiencia');
+            const grupoActividad = document.getElementById('grupoActividadFisica');
+            
+            if (esRecurrente) {
+                seccionCompleta.style.display = 'none';
+                seccionRecurrente.style.display = 'block';
+                seccionExperiencia.style.display = 'none';
+                grupoActividad.innerHTML = '<label>¿Cambió algo en tu actividad física o práctica deportiva desde tu última sesión? <span class="required">*</span></label><textarea id="cambiosActividadRecurrente" placeholder="Ej: No, sigo yendo al gimnasio 3 veces por semana. / Sí, empecé a correr."></textarea>';
+            } else {
+                seccionCompleta.style.display = 'block';
+                seccionRecurrente.style.display = 'none';
+                seccionExperiencia.style.display = 'block';
+                grupoActividad.innerHTML = '<label>¿Realiza actividad física o práctica algún deporte? <span class="required">*</span></label><div class="radio-group"><label class="radio-item"><input type="radio" name="actividadFisica" value="Sí"> Sí</label><label class="radio-item"><input type="radio" name="actividadFisica" value="No"> No</label></div><div class="form-group"><label>Si respondió SÍ, especifique cuál y con qué frecuencia:</label><textarea id="actividadDetalle"></textarea></div>';
+            }
+        }
+
+        // Mostrar advertencia de síntomas
+        function toggleWarningSintomas() {
+            const sintomas = document.querySelectorAll('input[name="sintomas"]:checked, input[name="sintomasRecurrente"]:checked');
+            const warning1 = document.getElementById('warningSintomas');
+            const warning2 = document.getElementById('warningSintomasRecurrente');
+            
+            let haySintomas = false;
+            sintomas.forEach(function(sintoma) {
+                if (sintoma.value !== 'Ninguno de los anteriores') haySintomas = true;
+            });
+            
+            if (warning1) {
+                if (document.getElementById('seccionSaludCompleta').style.display !== 'none') {
+                    warning1.classList.toggle('active', haySintomas);
+                }
+            }
+            if (warning2) {
+                if (document.getElementById('seccionSaludRecurrente').style.display !== 'none') {
+                    warning2.classList.toggle('active', haySintomas);
+                }
+            }
+        }
+
+        document.addEventListener('change', function(e) {
+            if (e.target.name === 'sintomas' || e.target.name === 'sintomasRecurrente') {
+                toggleWarningSintomas();
+            }
+        });
+
+        // Obtener datos del formulario
+        function obtenerDatos() {
+            const zona = document.querySelector('input[name="zona"]:checked');
+            let ubicacion = '';
+            if (zona) {
+                if (zona.value === 'CABA') ubicacion = 'CABA - Barrio: ' + (document.getElementById('barrio').value || 'No especificado');
+                else ubicacion = 'ZONA OESTE - Localidad: ' + (document.getElementById('localidad').value || 'No especificado');
+            }
+
+            const motivos = Array.from(document.querySelectorAll('input[name="motivo"]:checked')).map(function(cb) { return cb.value; }).join(', ');
+            const motivoOtro = document.getElementById('motivoOtro').value;
+            const motivoCompleto = motivos + (motivoOtro ? ' - Otro: ' + motivoOtro : '');
+
+            const zonasMolestia = Array.from(document.querySelectorAll('input[name="zonaMolestia"]:checked')).map(function(cb) { return cb.value; }).join(', ');
+            const zonaMolestiaOtra = document.getElementById('zonaMolestiaOtra').value;
+            const zonaMolestiaCompleta = zonasMolestia + (zonaMolestiaOtra ? ' - Otra: ' + zonaMolestiaOtra : '');
+
+            const sintomas = Array.from(document.querySelectorAll('input[name="sintomas"]:checked, input[name="sintomasRecurrente"]:checked')).map(function(cb) { return cb.value; }).join(', ') || 'No especificado';
+            
+            const tipoMedicamentos = Array.from(document.querySelectorAll('input[name="tipoMedicamentos"]:checked')).map(function(cb) { return cb.value; }).join(', ') || 'Ninguno';
+
+            return {
+                nombre: document.getElementById('nombre').value,
+                edad: document.getElementById('edad').value,
+                telefono: document.getElementById('telefono').value,
+                email: document.getElementById('email').value || 'No proporcionado',
+                direccion: document.getElementById('direccion').value,
+                entreCalles: document.getElementById('entreCalles').value || 'No especificado',
+                piso: document.getElementById('piso').value || 'No especificado',
+                departamento: document.getElementById('departamento').value || 'No especificado',
+                ubicacion: ubicacion,
+                fecha: document.getElementById('fecha').value,
+                hora: document.getElementById('hora').value,
+                clienteRecurrente: document.querySelector('input[name="clienteRecurrente"]:checked') ? document.querySelector('input[name="clienteRecurrente"]:checked').value : 'No',
+                cambiosSaludRecurrente: document.getElementById('cambiosSaludRecurrente') ? document.getElementById('cambiosSaludRecurrente').value : 'No aplica',
+                nuevosMedicamentos: document.querySelector('input[name="nuevosMedicamentos"]:checked') ? document.querySelector('input[name="nuevosMedicamentos"]:checked').value : 'No especificado',
+                nuevosMedicamentosDetalle: document.getElementById('nuevosMedicamentosDetalle') ? document.getElementById('nuevosMedicamentosDetalle').value : 'No aplica',
+                lesionReciente: document.querySelector('input[name="lesionReciente"]:checked') ? document.querySelector('input[name="lesionReciente"]:checked').value : 'No especificado',
+                lesionDetalle: document.getElementById('lesionDetalle').value || 'No aplica',
+                condiciones: Array.from(document.querySelectorAll('input[name="condiciones"]:checked')).map(function(cb) { return cb.value; }).join(', ') || 'Ninguna',
+                embarazoSemanas: document.getElementById('embarazoSemanas').value || 'No aplica',
+                musculoesqueletico: Array.from(document.querySelectorAll('input[name="musculoesqueletico"]:checked')).map(function(cb) { return cb.value; }).join(', ') || 'Ninguno',
+                tipoMedicamentos: tipoMedicamentos,
+                tipoMedicamentosDetalle: document.getElementById('tipoMedicamentosDetalle').value || 'No aplica',
+                alergias: document.querySelector('input[name="alergias"]:checked') ? document.querySelector('input[name="alergias"]:checked').value : 'No especificado',
+                alergiasDetalle: document.getElementById('alergiasDetalle').value || 'No aplica',
+                sintomas: sintomas,
+                actividadFisica: document.querySelector('input[name="actividadFisica"]:checked') ? document.querySelector('input[name="actividadFisica"]:checked').value : 'No especificado',
+                actividadDetalle: document.getElementById('actividadDetalle') ? document.getElementById('actividadDetalle').value : 'No aplica',
+                cambiosActividadRecurrente: document.getElementById('cambiosActividadRecurrente') ? document.getElementById('cambiosActividadRecurrente').value : 'No aplica',
+                motivo: motivoCompleto || 'No especificado',
+                zonaMolestia: zonaMolestiaCompleta || 'No especificado',
+                escalaDolor: document.getElementById('escalaDolor').value || 'No especificado',
+                zonaEvitar: document.querySelector('input[name="zonaEvitar"]:checked') ? document.querySelector('input[name="zonaEvitar"]:checked').value : 'No especificado',
+                zonaEvitarDetalle: document.getElementById('zonaEvitarDetalle').value || 'No aplica',
+                primeraSesion: document.querySelector('input[name="primeraSesion"]:checked') ? document.querySelector('input[name="primeraSesion"]:checked').value : 'No especificado',
+                observaciones: document.getElementById('observaciones').value || 'Ninguna',
+                firmaNombre: document.getElementById('firmaNombre').value,
+                fechaAceptacion: document.getElementById('fechaAceptacion').value
+            };
+        }
+
+        // Validación con scroll
+        function validarFormulario() {
+            const form = document.getElementById('clientForm');
+            if (!form.checkValidity()) {
+                const primerCampoInvalido = form.querySelector(':invalid');
+                if (primerCampoInvalido) {
+                    primerCampoInvalido.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    primerCampoInvalido.focus();
+                    primerCampoInvalido.style.borderColor = '#ff4444';
+                    setTimeout(function() { primerCampoInvalido.style.borderColor = '#444'; }, 3000);
+                }
+                alert('⚠️ Hay campos obligatorios sin completar. Revisá los campos marcados con *');
+                return false;
+            }
+            if (!document.getElementById('aceptaConsentimiento').checked) {
+                alert('Debe aceptar el consentimiento informado y el aviso de privacidad para continuar');
+                return false;
+            }
+            return true;
+        }
+
+        // Enviar por WhatsApp
+        function enviarWhatsApp() {
+            if (!validarFormulario()) return;
+
+            const d = obtenerDatos();
+            let mensaje = '📋 *NUEVA FICHA DE CLIENTE - LEXVOR*\n\n';
+            mensaje += '═══════════════════════════\n*1. DATOS PERSONALES*\n═══════════════════════════\n';
+            mensaje += '👤 Nombre: ' + d.nombre + '\n🎂 Edad: ' + d.edad + ' años\n📱 Teléfono: ' + d.telefono + '\n📧 Email: ' + d.email + '\n🔄 Cliente recurrente: ' + d.clienteRecurrente + '\n\n';
+
+            if (d.clienteRecurrente === 'Si') {
+                mensaje += '═══════════════════════════\n*3. ACTUALIZACIÓN DE SALUD*\n═══════════════════════════\n';
+                mensaje += '📝 Cambios desde la última sesión: ' + d.cambiosSaludRecurrente + '\n';
+                mensaje += '💊 Nuevos medicamentos: ' + d.nuevosMedicamentos + (d.nuevosMedicamentos === 'Sí' ? ' (' + d.nuevosMedicamentosDetalle + ')' : '') + '\n';
+                mensaje += '⚠️ Síntomas actuales: ' + d.sintomas + '\n\n';
+            } else {
+                mensaje += '═══════════════════════════\n*3. HISTORIAL DE SALUD*\n═══════════════════════════\n';
+                mensaje += '🏥 Lesión/Condición actual: ' + d.lesionReciente + (d.lesionReciente === 'Sí' ? ' (' + d.lesionDetalle + ')' : '') + '\n';
+                mensaje += '⚠️ Condiciones: ' + d.condiciones + (d.condiciones.indexOf('Embarazo') !== -1 ? ' (' + d.embarazoSemanas + ' sem)' : '') + '\n';
+                mensaje += '🦴 Musculoesquelético: ' + d.musculoesqueletico + '\n';
+                mensaje += '💊 Tipo de medicamentos: ' + d.tipoMedicamentos + (d.tipoMedicamentosDetalle ? ' (' + d.tipoMedicamentosDetalle + ')' : '') + '\n';
+                mensaje += '🌿 Alergias: ' + d.alergias + (d.alergias === 'Sí' ? ' (' + d.alergiasDetalle + ')' : '') + '\n';
+                mensaje += '⚠️ Síntomas actuales: ' + d.sintomas + '\n\n';
+            }
+
+            mensaje += '═══════════════════════════\n*2. DATOS DEL SERVICIO*\n═══════════════════════════\n';
+            mensaje += '📍 Dirección: ' + d.direccion + ' (' + d.entreCalles + ')\n🏢 Piso: ' + d.piso + ', Depto: ' + d.departamento + '\n📍 Ubicación: ' + d.ubicacion + '\n📅 Fecha: ' + d.fecha + ' ⏰ Hora: ' + d.hora + '\n\n';
+
+            mensaje += '═══════════════════════════\n*4. MOTIVO DE LA CONSULTA*\n═══════════════════════════\n';
+            if (d.clienteRecurrente === 'Si') {
+                mensaje += '🏃 Cambios en actividad física: ' + d.cambiosActividadRecurrente + '\n';
+            } else {
+                mensaje += '🏃 Actividad física: ' + d.actividadFisica + (d.actividadFisica === 'Sí' ? ' (' + d.actividadDetalle + ')' : '') + '\n';
+            }
+            mensaje += '🎯 Motivo: ' + d.motivo + '\n📍 Zona/s de molestia: ' + d.zonaMolestia + '\n⚡ Dolor (1-10): ' + d.escalaDolor + '\n';
+            mensaje += '🚫 Zona a evitar: ' + d.zonaEvitar + (d.zonaEvitar === 'Sí' ? ' (' + d.zonaEvitarDetalle + ')' : '') + '\n\n';
+
+            mensaje += '═══════════════════════════\n*5. EXPERIENCIA Y CONSENTIMIENTO*\n═══════════════════════════\n';
+            mensaje += '🆘 Primera sesión de masaje: ' + d.primeraSesion + '\n📝 Observaciones: ' + d.observaciones + '\n';
+            mensaje += '✅ Consentimiento y privacidad aceptados por: ' + d.firmaNombre + ' el ' + d.fechaAceptacion + '\n';
+
+            window.location.href = 'https://wa.me/5491161130307?text=' + encodeURIComponent(mensaje);
+
+            setTimeout(function() {
+                document.getElementById('nombreAgradecimiento').textContent = d.nombre;
+                document.getElementById('mensajeAgradecimiento').style.display = 'flex';
+            }, 1000);
+        }
+
+        // Generar versión para imprimir
+        function generarVersionFirma() {
+            if (!validarFormulario()) return;
+
+            const d = obtenerDatos();
+            const fechaImpresion = new Date().toLocaleDateString('es-AR');
+            
+            let saludHTML = '';
+            if (d.clienteRecurrente === 'Si') {
+                saludHTML = '<div class="section"><h2 class="section-title">3. Actualización de Salud (Cliente Recurrente)</h2><div class="data-row"><span class="data-label">📝 Cambios desde la última sesión:</span><span class="data-value">' + d.cambiosSaludRecurrente + '</span></div><div class="data-row"><span class="data-label">💊 Nuevos medicamentos:</span><span class="data-value">' + d.nuevosMedicamentos + (d.nuevosMedicamentos === 'Sí' ? ' (' + d.nuevosMedicamentosDetalle + ')' : '') + '</span></div><div class="data-row"><span class="data-label">⚠️ Síntomas actuales:</span><span class="data-value">' + d.sintomas + '</span></div></div>';
+            } else {
+                saludHTML = '<div class="section"><h2 class="section-title">3. Historial de Salud</h2><div class="data-row"><span class="data-label">🏥 Lesión/Condición actual:</span><span class="data-value">' + d.lesionReciente + (d.lesionReciente === 'Sí' ? ' (' + d.lesionDetalle + ')' : '') + '</span></div><div class="data-row"><span class="data-label">⚠️ Condiciones:</span><span class="data-value">' + d.condiciones + '</span></div><div class="data-row"><span class="data-label">🦴 Musculoesquelético:</span><span class="data-value">' + d.musculoesqueletico + '</span></div><div class="data-row"><span class="data-label">💊 Tipo de medicamentos:</span><span class="data-value">' + d.tipoMedicamentos + (d.tipoMedicamentosDetalle ? ' (' + d.tipoMedicamentosDetalle + ')' : '') + '</span></div><div class="data-row"><span class="data-label">🌿 Alergias:</span><span class="data-value">' + d.alergias + (d.alergias === 'Sí' ? ' (' + d.alergiasDetalle + ')' : '') + '</span></div><div class="data-row"><span class="data-label">⚠️ Síntomas actuales:</span><span class="data-value">' + d.sintomas + '</span></div></div>';
+            }
+
+            const ventanaImpresion = window.open('', '_blank', 'width=800,height=600');
+            ventanaImpresion.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>LEXVOR - Ficha para Firma</title><style>* { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: Segoe UI, sans-serif; background: white; color: #000; line-height: 1.6; padding: 30px; max-width: 210mm; margin: 0 auto; } .header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 3px solid #d4af37; } .logo-img { width: 200px; height: auto; margin-bottom: 10px; } h1 { font-size: 2em; color: #000; letter-spacing: 6px; margin-bottom: 5px; } .slogan { color: #555; font-style: italic; font-size: 1em; letter-spacing: 2px; } .doc-title { text-align: center; font-size: 1.3em; font-weight: bold; margin: 20px 0; text-transform: uppercase; } .section { margin-bottom: 25px; padding: 15px; background: #fafafa; border-left: 4px solid #d4af37; page-break-inside: avoid; } .section-title { font-size: 1.1em; color: #000; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid #ccc; text-transform: uppercase; font-weight: bold; } .data-row { margin-bottom: 10px; display: flex; flex-wrap: wrap; } .data-label { font-weight: bold; color: #333; min-width: 200px; } .data-value { color: #000; flex: 1; background: #f0f0f0; padding: 5px 10px; border-radius: 3px; border: 1px solid #ddd; } .consent-text, .privacy-text { background: #fafafa; padding: 15px; border: 1px solid #ccc; border-radius: 5px; font-size: 0.9em; line-height: 1.6; margin-bottom: 20px; } .signature-box { display: flex; justify-content: space-between; gap: 40px; margin-top: 60px; } .signature-block { flex: 1; text-align: center; } .signature-line { border-top: 1px solid #000; width: 100%; max-width: 250px; margin: 80px auto 10px auto; } .signature-label { font-size: 0.9em; color: #000; font-weight: bold; } .signature-name { font-size: 0.85em; color: #333; margin-top: 5px; } .print-button { position: fixed; top: 20px; right: 20px; background: #d4af37; color: white; border: none; padding: 12px 24px; border-radius: 5px; font-size: 1em; font-weight: bold; cursor: pointer; z-index: 1000; } @media print { .print-button { display: none; } @page { size: A4; margin: 15mm; } }</style></head><body><button class="print-button" onclick="window.print()">🖨️ Imprimir</button><div class="header"><img src="logo-lexvor.png" alt="LEXVOR" class="logo-img"><h1>LEXVOR</h1><p class="slogan">Ingeniería de la recuperación</p></div><div class="doc-title">Ficha de Evaluación y Consentimiento Informado</div><div class="section"><h2 class="section-title">1. Datos Personales</h2><div class="data-row"><span class="data-label">Nombre completo:</span><span class="data-value">' + d.nombre + '</span></div><div class="data-row"><span class="data-label">Edad:</span><span class="data-value">' + d.edad + ' años</span></div><div class="data-row"><span class="data-label">Teléfono:</span><span class="data-value">' + d.telefono + '</span></div><div class="data-row"><span class="data-label">Cliente recurrente:</span><span class="data-value">' + d.clienteRecurrente + '</span></div></div><div class="section"><h2 class="section-title">2. Datos del Servicio</h2><div class="data-row"><span class="data-label">Dirección:</span><span class="data-value">' + d.direccion + ' (' + d.entreCalles + ')</span></div><div class="data-row"><span class="data-label">Piso / Depto:</span><span class="data-value">' + d.piso + ' / ' + d.departamento + '</span></div><div class="data-row"><span class="data-label">Ubicación:</span><span class="data-value">' + d.ubicacion + '</span></div><div class="data-row"><span class="data-label">Fecha y Hora:</span><span class="data-value">' + d.fecha + ' a las ' + d.hora + '</span></div></div>' + saludHTML + '<div class="section"><h2 class="section-title">4. Motivo de la Consulta</h2><div class="data-row"><span class="data-label">Motivo:</span><span class="data-value">' + d.motivo + '</span></div><div class="data-row"><span class="data-label">Zona/s de molestia:</span><span class="data-value">' + d.zonaMolestia + '</span></div><div class="data-row"><span class="data-label">Escala de dolor (1-10):</span><span class="data-value">' + d.escalaDolor + '</span></div></div><div class="section"><h2 class="section-title">6. Aviso de Privacidad</h2><div class="privacy-text"><p>La información proporcionada será utilizada exclusivamente para conocer los antecedentes, necesidades y preferencias del cliente, preparar la sesión y realizar el seguimiento del servicio.</p><p>Los datos personales y de salud serán tratados de manera confidencial y no serán compartidos con terceros.</p><p>El cliente podrá solicitar el acceso, actualización o supresión de sus datos.</p></div></div><div class="section"><h2 class="section-title">7. Consentimiento Informado</h2><div class="consent-text"><p>Declaro que la información proporcionada es veraz. Entiendo que el masaje es un complemento y no reemplaza la atención médica. Me comprometo a comunicar cualquier molestia durante la sesión. Autorizo la realización del servicio y acepto el aviso de privacidad.</p></div></div><div class="signature-box"><div class="signature-block"><div class="signature-line"></div><div class="signature-label">FIRMA DEL CLIENTE</div><div class="signature-name">' + d.nombre + '</div><div class="signature-name">DNI: ___________________</div></div><div class="signature-block"><div class="signature-line"></div><div class="signature-label">FIRMA DEL TERAPEUTA</div><div class="signature-name">LEXVOR - Sixto Eusebio Sandoval</div><div class="signature-name">Fecha: ' + fechaImpresion + '</div></div></div></body></html>');
+            ventanaImpresion.document.close();
+        }
+
+        // AUTOGUARDADO
+        function guardarProgreso() {
+            const datos = {};
+            const camposTexto = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], input[type="time"], textarea');
+            camposTexto.forEach(function(campo) {
+                if (campo.id && campo.id !== 'fechaAceptacion') {
+                    datos[campo.id] = campo.value;
+                }
+            });
+            const radios = document.querySelectorAll('input[type="radio"]:checked');
+            radios.forEach(function(radio) {
+                datos['radio_' + radio.name] = radio.value;
+            });
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            checkboxes.forEach(function(cb) {
+                if (cb.name) {
+                    if (!datos['checkbox_' + cb.name]) datos['checkbox_' + cb.name] = [];
+                    datos['checkbox_' + cb.name].push(cb.value);
+                }
+            });
+            localStorage.setItem('lexvor_formulario', JSON.stringify(datos));
+        }
+
+        function recuperarProgreso() {
+            const datosGuardados = localStorage.getItem('lexvor_formulario');
+            if (!datosGuardados) return;
+            try {
+                const datos = JSON.parse(datosGuardados);
+                Object.keys(datos).forEach(function(key) {
+                    if (key.indexOf('radio_') !== 0 && key.indexOf('checkbox_') !== 0) {
+                        const campo = document.getElementById(key);
+                        if (campo) campo.value = datos[key];
+                    }
+                });
+                Object.keys(datos).forEach(function(key) {
+                    if (key.indexOf('radio_') === 0) {
+                        const name = key.replace('radio_', '');
+                        const radio = document.querySelector('input[name="' + name + '"][value="' + datos[key] + '"]');
+                        if (radio) {
+                            radio.checked = true;
+                            radio.dispatchEvent(new Event('change'));
+                        }
+                    }
+                });
+                Object.keys(datos).forEach(function(key) {
+                    if (key.indexOf('checkbox_') === 0) {
+                        const name = key.replace('checkbox_', '');
+                        const valores = datos[key];
+                        valores.forEach(function(valor) {
+                            const checkbox = document.querySelector('input[name="' + name + '"][value="' + valor + '"]');
+                            if (checkbox) checkbox.checked = true;
+                        });
+                    }
+                });
+            } catch(e) {
+                console.error('Error al recuperar progreso:', e);
+            }
+        }
+
+        function salirYLimpair() {
+            localStorage.removeItem('lexvor_formulario');
+            document.getElementById('clientForm').reset();
+            document.getElementById('fechaAceptacion').value = new Date().toLocaleDateString('es-AR');
+            document.getElementById('mensajeAgradecimiento').style.display = 'none';
+            toggleClienteRecurrente();
+            toggleZona();
+            alert('¡Gracias por usar LEXVOR! Te contactaremos pronto. 🙌');
+        }
+
+        function cerrarMensajeAgradecimiento() {
+            document.getElementById('mensajeAgradecimiento').style.display = 'none';
+        }
+
+        // Inicializar al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('fechaAceptacion').value = new Date().toLocaleDateString('es-AR');
+            recuperarProgreso();
+            const campos = document.querySelectorAll('input, textarea, select');
+            campos.forEach(function(campo) {
+                campo.addEventListener('input', guardarProgreso);
+                campo.addEventListener('change', guardarProgreso);
+            });
+        });
+    </script>
+</body>
+</html>
