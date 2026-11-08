@@ -222,11 +222,21 @@
             <div class="section" id="seccionSaludCompleta">
                 <h2 class="section-title">3. Historial de Salud y Contraindicaciones</h2>
                 
+                <!-- Recuadro de información voluntaria con scroll -->
+                <div class="consent-text" style="margin-bottom: 25px; border-left: 3px solid #d4af37;">
+                    <h3 style="font-size: 1em; margin-bottom: 10px;">IMPORTANTE SOBRE LA INFORMACIÓN DE SALUD</h3>
+                    <p style="font-size: 0.9em; margin-bottom: 10px;">Las siguientes preguntas tienen como finalidad identificar antecedentes y situaciones que podrían requerir precauciones antes de realizar una sesión de masaje.</p>
+                    <p style="font-size: 0.9em; margin-bottom: 10px;">La información sobre salud es de carácter sensible y su respuesta es voluntaria.</p>
+                    <p style="font-size: 0.9em; margin-bottom: 10px;">Si preferís no proporcionar alguno de estos datos, podés dejar la pregunta sin responder. Sin embargo, si la información disponible no resulta suficiente para evaluar las condiciones de seguridad del servicio, LEXVOR podrá solicitar una aclaración, modificar la sesión o postergar su realización.</p>
+                    <p style="font-size: 0.9em; margin-bottom: 0;">La información que decidas proporcionar será tratada conforme al Aviso de Privacidad y Protección de Datos Personales.</p>
+                </div>
+
                 <div class="form-group">
-                    <label>¿Tiene actualmente alguna lesión, cirugía, fractura o condición física que deba tener en cuenta? <span class="required">*</span></label>
+                    <label>¿Tiene actualmente alguna lesión, cirugía, fractura o condición física que deba tener en cuenta?</label>
                     <div class="radio-group">
                         <label class="radio-item"><input type="radio" name="lesionReciente" value="Sí"> Sí</label>
                         <label class="radio-item"><input type="radio" name="lesionReciente" value="No"> No</label>
+                        <label class="radio-item"><input type="radio" name="lesionReciente" value="Prefiero no responder"> Prefiero no responder</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -244,6 +254,7 @@
                         <label class="checkbox-item"><input type="checkbox" name="condiciones" value="Trombosis/Varices severas" onchange="handleNinguna(this)"> Trombosis o varices severas</label>
                         <label class="checkbox-item"><input type="checkbox" name="condiciones" value="Problemas de coagulación" onchange="handleNinguna(this)"> Problemas de coagulación</label>
                         <label class="checkbox-item"><input type="checkbox" name="condiciones" value="Ninguna" onchange="handleNinguna(this)"> Ninguna</label>
+                        <label class="checkbox-item"><input type="checkbox" name="condiciones" value="Prefiero no responder" onchange="handleNinguna(this)"> Prefiero no responder</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -261,11 +272,12 @@
                         <label class="checkbox-item"><input type="checkbox" name="musculoesqueletico" value="Artritis" onchange="handleNinguna(this)"> Artritis</label>
                         <label class="checkbox-item"><input type="checkbox" name="musculoesqueletico" value="Osteoporosis" onchange="handleNinguna(this)"> Osteoporosis</label>
                         <label class="checkbox-item"><input type="checkbox" name="musculoesqueletico" value="Ninguno" onchange="handleNinguna(this)"> Ninguno</label>
+                        <label class="checkbox-item"><input type="checkbox" name="musculoesqueletico" value="Prefiero no responder" onchange="handleNinguna(this)"> Prefiero no responder</label>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>¿Utiliza alguno de estos medicamentos? (Marque todas las que apliquen) <span class="required">*</span></label>
+                    <label>¿Utiliza alguno de estos medicamentos? (Marque todas las que apliquen)</label>
                     <div class="checkbox-group">
                         <label class="checkbox-item"><input type="checkbox" name="tipoMedicamentos" value="Anticoagulantes" onchange="handleNinguna(this)"> Anticoagulantes</label>
                         <label class="checkbox-item"><input type="checkbox" name="tipoMedicamentos" value="Antihipertensivos" onchange="handleNinguna(this)"> Antihipertensivos</label>
@@ -273,6 +285,7 @@
                         <label class="checkbox-item"><input type="checkbox" name="tipoMedicamentos" value="Antiagregantes plaquetarios" onchange="handleNinguna(this)"> Antiagregantes plaquetarios</label>
                         <label class="checkbox-item"><input type="checkbox" name="tipoMedicamentos" value="Otros" onchange="handleNinguna(this)"> Otros</label>
                         <label class="checkbox-item"><input type="checkbox" name="tipoMedicamentos" value="Ninguno" onchange="handleNinguna(this)"> Ninguno</label>
+                        <label class="checkbox-item"><input type="checkbox" name="tipoMedicamentos" value="Prefiero no responder" onchange="handleNinguna(this)"> Prefiero no responder</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -281,10 +294,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label>¿Tiene alguna alergia o reacción conocida a productos de uso tópico (cremas, aceites, fragancias)? <span class="required">*</span></label>
+                    <label>¿Tiene alguna alergia o reacción conocida a productos de uso tópico (cremas, aceites, fragancias)?</label>
                     <div class="radio-group">
                         <label class="radio-item"><input type="radio" name="alergias" value="Sí"> Sí</label>
                         <label class="radio-item"><input type="radio" name="alergias" value="No"> No</label>
+                        <label class="radio-item"><input type="radio" name="alergias" value="Prefiero no responder"> Prefiero no responder</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -293,7 +307,7 @@
                 </div>
 
                 <div class="form-group" style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #333;">
-                    <label><strong>¿Presenta actualmente alguno de estos síntomas?</strong> <span class="required">*</span></label>
+                    <label><strong>¿Presenta actualmente alguno de estos síntomas?</strong></label>
                     <p style="color: #888; font-size: 0.85em; margin-bottom: 15px;">Esta información es fundamental para su seguridad. Si presenta alguno de estos síntomas, el terapeuta evaluará si es seguro proceder con la sesión.</p>
                     <div class="checkbox-group">
                         <label class="checkbox-item"><input type="checkbox" name="sintomas" value="Fiebre o malestar general" onchange="handleNinguna(this)"> Fiebre o malestar general</label>
@@ -301,6 +315,7 @@
                         <label class="checkbox-item"><input type="checkbox" name="sintomas" value="Dolor intenso de aparición reciente" onchange="handleNinguna(this)"> Dolor intenso de aparición reciente</label>
                         <label class="checkbox-item"><input type="checkbox" name="sintomas" value="Enrojecimiento o infección en la zona" onchange="handleNinguna(this)"> Enrojecimiento o infección en la zona</label>
                         <label class="checkbox-item"><input type="checkbox" name="sintomas" value="Ninguno de los anteriores" onchange="handleNinguna(this)"> Ninguno de los anteriores</label>
+                        <label class="checkbox-item"><input type="checkbox" name="sintomas" value="Prefiero no responder" onchange="handleNinguna(this)"> Prefiero no responder</label>
                     </div>
                     <div class="warning-message" id="warningSintomas">
                         ⚠️ <strong>Importante:</strong> Según los síntomas indicados, recomendamos consultar con su médico antes de realizar la sesión. El terapeuta evaluará si es seguro proceder.
@@ -311,15 +326,17 @@
             <!-- SECCIÓN 3B: ACTUALIZACIÓN (SOLO RECURRENTES) -->
             <div class="section" id="seccionSaludRecurrente" style="display: none;">
                 <h2 class="section-title">3. Actualización de Salud (Cliente Recurrente)</h2>
+                
                 <div class="form-group">
-                    <label>¿Cambió algo en tu estado de salud, medicación, lesiones o molestias desde tu última sesión? <span class="required">*</span></label>
+                    <label>¿Cambió algo en tu estado de salud, medicación, lesiones o molestias desde tu última sesión?</label>
                     <textarea id="cambiosSaludRecurrente" placeholder="Ej: No, todo sigue igual. / Sí, ahora tengo una leve molestia en la rodilla derecha."></textarea>
                 </div>
                 <div class="form-group">
-                    <label>¿Comenzó a tomar algún medicamento nuevo? <span class="required">*</span></label>
+                    <label>¿Comenzó a tomar algún medicamento nuevo?</label>
                     <div class="radio-group">
                         <label class="radio-item"><input type="radio" name="nuevosMedicamentos" value="Sí"> Sí</label>
                         <label class="radio-item"><input type="radio" name="nuevosMedicamentos" value="No"> No</label>
+                        <label class="radio-item"><input type="radio" name="nuevosMedicamentos" value="Prefiero no responder"> Prefiero no responder</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -328,7 +345,7 @@
                 </div>
 
                 <div class="form-group" style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #333;">
-                    <label><strong>¿Presenta actualmente alguno de estos síntomas?</strong> <span class="required">*</span></label>
+                    <label><strong>¿Presenta actualmente alguno de estos síntomas?</strong></label>
                     <p style="color: #888; font-size: 0.85em; margin-bottom: 15px;">Esta información es fundamental para su seguridad.</p>
                     <div class="checkbox-group">
                         <label class="checkbox-item"><input type="checkbox" name="sintomasRecurrente" value="Fiebre o malestar general" onchange="handleNinguna(this)"> Fiebre o malestar general</label>
@@ -336,6 +353,7 @@
                         <label class="checkbox-item"><input type="checkbox" name="sintomasRecurrente" value="Dolor intenso de aparición reciente" onchange="handleNinguna(this)"> Dolor intenso de aparición reciente</label>
                         <label class="checkbox-item"><input type="checkbox" name="sintomasRecurrente" value="Enrojecimiento o infección en la zona" onchange="handleNinguna(this)"> Enrojecimiento o infección en la zona</label>
                         <label class="checkbox-item"><input type="checkbox" name="sintomasRecurrente" value="Ninguno de los anteriores" onchange="handleNinguna(this)"> Ninguno de los anteriores</label>
+                        <label class="checkbox-item"><input type="checkbox" name="sintomasRecurrente" value="Prefiero no responder" onchange="handleNinguna(this)"> Prefiero no responder</label>
                     </div>
                     <div class="warning-message" id="warningSintomasRecurrente">
                         ⚠️ <strong>Importante:</strong> Según los síntomas indicados, recomendamos consultar con su médico antes de realizar la sesión. El terapeuta evaluará si es seguro proceder.
@@ -523,19 +541,19 @@
     </div>
 
     <script>
-        // Lógica para que "Ninguna" / "Ninguno" sea excluyente
+        // Lógica para que "Ninguna", "Ninguno" o "Prefiero no responder" sean excluyentes
         function handleNinguna(checkbox) {
             const name = checkbox.name;
             const checkboxes = document.querySelectorAll(`input[name="${name}"]`);
-            const esNinguna = checkbox.value === 'Ninguna' || checkbox.value === 'Ninguno' || checkbox.value === 'Ninguno de los anteriores';
+            const esExcluyente = checkbox.value === 'Ninguna' || checkbox.value === 'Ninguno' || checkbox.value === 'Ninguno de los anteriores' || checkbox.value === 'Prefiero no responder';
             
-            if (esNinguna && checkbox.checked) {
+            if (esExcluyente && checkbox.checked) {
                 checkboxes.forEach(cb => {
                     if (cb !== checkbox) cb.checked = false;
                 });
-            } else if (!esNinguna && checkbox.checked) {
-                const ninguna = Array.from(checkboxes).find(cb => cb.value === 'Ninguna' || cb.value === 'Ninguno' || cb.value === 'Ninguno de los anteriores');
-                if (ninguna) ninguna.checked = false;
+            } else if (!esExcluyente && checkbox.checked) {
+                const excluyente = Array.from(checkboxes).find(cb => cb.value === 'Ninguna' || cb.value === 'Ninguno' || cb.value === 'Ninguno de los anteriores' || cb.value === 'Prefiero no responder');
+                if (excluyente) excluyente.checked = false;
             }
             guardarProgreso();
         }
@@ -563,7 +581,7 @@
                 seccionCompleta.style.display = 'none';
                 seccionRecurrente.style.display = 'block';
                 seccionExperiencia.style.display = 'none';
-                grupoActividad.innerHTML = '<label>¿Cambió algo en tu actividad física o práctica deportiva desde tu última sesión? <span class="required">*</span></label><textarea id="cambiosActividadRecurrente" placeholder="Ej: No, sigo yendo al gimnasio 3 veces por semana. / Sí, empecé a correr."></textarea>';
+                grupoActividad.innerHTML = '<label>¿Cambió algo en tu actividad física o práctica deportiva desde tu última sesión?</label><textarea id="cambiosActividadRecurrente" placeholder="Ej: No, sigo yendo al gimnasio 3 veces por semana. / Sí, empecé a correr."></textarea>';
             } else {
                 seccionCompleta.style.display = 'block';
                 seccionRecurrente.style.display = 'none';
@@ -580,7 +598,7 @@
             
             let haySintomas = false;
             sintomas.forEach(function(sintoma) {
-                if (sintoma.value !== 'Ninguno de los anteriores') haySintomas = true;
+                if (sintoma.value !== 'Ninguno de los anteriores' && sintoma.value !== 'Prefiero no responder') haySintomas = true;
             });
             
             if (warning1) {
@@ -802,7 +820,7 @@
                             const checkbox = document.querySelector('input[name="' + name + '"][value="' + valor + '"]');
                             if (checkbox) {
                                 checkbox.checked = true;
-                                if (valor === 'Ninguna' || valor === 'Ninguno' || valor === 'Ninguno de los anteriores') {
+                                if (valor === 'Ninguna' || valor === 'Ninguno' || valor === 'Ninguno de los anteriores' || valor === 'Prefiero no responder') {
                                     handleNinguna(checkbox);
                                 }
                             }
